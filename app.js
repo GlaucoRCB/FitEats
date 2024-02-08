@@ -11,6 +11,8 @@ const app = express();
 const handlebars = require('express-handlebars')
 /* 11º instalar e carregar o body parser para receber dados de qualquer formulário */
 const bodyParser = require('body-parser')
+/* 12º instalar e carregar o banco de dados mongoose */
+const mongoose = require("mongoose")
 
 /* 7º Config
     Template Engine
@@ -53,6 +55,7 @@ app.post('/receitarecebida', (req, res) => {
  comando para o servidor rodar na porta desejada:
 app.listen 
 */
+const PORT = 8090
 app.listen(8090, () => {
     console.log("Servidor Rodando na url http://localhost:8090");
 });
