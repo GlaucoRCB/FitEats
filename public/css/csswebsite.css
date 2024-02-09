@@ -1,0 +1,29 @@
+body {font-size : 100%;
+     background: linear-gradient(68.15deg, #7a6e6e 16.62%, #bb9f76 85.61%);}
+.font {
+    font-family: 'Righteous', sans-serif;
+    display: flex;
+    align-items: center;
+    color: #f0eeed;
+}
+
+.FitEatsIco {
+        height: 40px;
+        border: none;
+        display: flex;
+        box-shadow: 4px 5px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 500px;
+}
+
+.ilustrativo1 {
+    height: 300px;
+    border: none;
+    align-items: center;
+    box-shadow: 4px 5px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 500px;
+    display: block;
+    
+}
+
+.box {font-size : 100%;
+    background: linear-gradient(68.15deg, #7a6e6e 16.62%, #bb9f76 85.61%);}
