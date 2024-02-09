@@ -12,7 +12,11 @@ const handlebars = require('express-handlebars')
 /* 11º instalar e carregar o body parser para receber dados de qualquer formulário */
 const bodyParser = require('body-parser')
 /* 12º instalar e carregar o banco de dados mongoose */
-const mongoose = require("mongoose")
+ // const mongoose = require("mongoose")
+/*trazendo as rotas do admin para o programa principal*/
+const admin = require("./routes/admin")
+/*carregar o path arquivos estaticos do css e js para facilitar a criação do css */
+const path = require('path')
 
 /* 7º Config
     Template Engine
@@ -23,6 +27,9 @@ const mongoose = require("mongoose")
     /* 12º body parser config */
     app.use(bodyParser.urlencoded({extended: false}))
     app.use(bodyParser.json()) 
+
+    /* public config "comando __dirname" para pegar o caminho absoluto para a pasta public  */
+    app.use(express.static(path.join(__dirname,"public")))
 
 /* 4º Definir uma rota para mostrar a aplicação */  
 app.get("/", (req, res) => {
@@ -46,6 +53,8 @@ app.post('/receitarecebida', (req, res) => {
     res.send('Nova receita recebida!')
 })
 
+/*colocando para o arquivo principal as rota admin*/
+app.use('/admin', admin)
 
 
 
