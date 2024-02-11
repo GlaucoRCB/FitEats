@@ -12,17 +12,42 @@ const handlebars = require('express-handlebars')
 /* 11º instalar e carregar o body parser para receber dados de qualquer formulário */
 const bodyParser = require('body-parser')
 /* 12º instalar e carregar o banco de dados mongoose */
- // const mongoose = require("mongoose")
+const mongoose = require("mongoose")
 /*trazendo as rotas do admin para o programa principal*/
 const admin = require("./routes/admin")
 /*carregar o path arquivos estaticos do css e js para facilitar a criação do css */
 const path = require('path')
-
+/*carregando modulos session e flash instalados com os comandos
+    npm install --save express-session
+    npm install --save connect-flash
+    para fazer autenticação e validação de dados
+*/
+const session = require("express-session")
+const flash = require("connect-flash")
+// Configurações
+/*configurando a session e o flash */
+    app.use(session({
+        secret: "geladeiratsunami123",
+        resave: true,
+        saveUninitialized: true
+    }))
+    app.use(flash())
+    /*Colocando um middleware ele precisa ter req, res, next*/
+    app.use((req, res, next) => {
+        res.locals.success_msg = req.flash("success_msg")
+        res.locals.error_msg = req.flash("error_msg")
+        next()
+    })
+    
 /* 7º Config
     Template Engine
     nesta área definiremos o nosso padrão template
     */
-    app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
+    app.engine('handlebars', handlebars.engine({defaultLayout: 'main', runtimeOptions:{
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+         },
+     }))
     app.set('view engine', 'handlebars')
     /* 12º body parser config */
     app.use(bodyParser.urlencoded({extended: false}))
@@ -30,6 +55,14 @@ const path = require('path')
 
     /* public config "comando __dirname" para pegar o caminho absoluto para a pasta public  */
     app.use(express.static(path.join(__dirname,"public")))
+    
+    /* configurando o mongoose para se conectar as informações ao banco de dados*/
+    mongoose.Promise = global.Promise;
+     mongoose.connect("mongodb://localhost/FitEats").then(() => {
+        console.log("Conectado ao mongo")
+     }).catch((err) => {
+        console.log("Erro ao se conectar: "+err)
+     })
 
 /* 4º Definir uma rota para mostrar a aplicação */  
 app.get("/", (req, res) => {
