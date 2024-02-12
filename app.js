@@ -24,6 +24,11 @@ const path = require('path')
 */
 const session = require("express-session")
 const flash = require("connect-flash")
+/* carregar os models receita e categorias */
+require("./models/Receita")
+const Receita = mongoose.model("receitas")
+require("./models/Categoria")
+const Categoria = mongoose.model("categorias")
 // Configurações
 /*configurando a session e o flash */
     app.use(session({
@@ -65,22 +70,78 @@ const flash = require("connect-flash")
      })
 
 /* 4º Definir uma rota para mostrar a aplicação */  
+/* rota principal para listar as receitas */
 app.get("/", (req, res) => {
-    res.send("Seja bem vindo ao meu app!")
-});
+    Receita.find().sort({date:'desc'}).then((receitas) => {
+        Categoria.find().then((categorias) => {
+            receitas.map((element) => {
+                element.categoria = categorias.find(x=>x.id==element.categoria)
+            })
+            res.render("index", {receitas: receitas, categorias: categorias})
+        }).catch((err) => {
+            req.flash("error_msg", "Houve um erro interno")
+            res.redirect("/404")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve um erro interno")
+            res.redirect("/404")
+        })
+    })
+})
+/* rota para acessar o leia mais */
+app.get("/receita/:slug", (req, res) => {
+    Receita.findOne({slug: req.params.slug}).then((receita) =>{
+        if(receita){
+            res.render("receita/index", {receita: receita})
+        }else{
+            req.flash("error_msg", "Esta receita não  existe")
+            res.redirect("/")
+        }
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro interno.")
+        res.redirect("/")
+    })
+})
+/* rota de erro */
+app.get("/404", (req, res) => {
+    res.send("Erro 404!")
+})
+/* rota para listar as categorias */
+app.get("/categorias", (req, res) => {
+    Categoria.find().then((categorias) => {
+        res.render("categorias/index", {categorias: categorias})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro interno ao listar as categorias")
+        res.redirect("/")
+    })
+})
 
-/* 5º Definição de parametros utiliza ":" */
-/* app.get('/ola/:nome/:cargo', (req, res) => {
-    res.send(req.params);
-}) */
+app.get("/categorias/:slug", (req, res) => {
+    Categoria.findOne({slug: req.params.slug}).then((categoria) => {
+        if(categoria){
+            Receita.find({categoria: categoria._id}).then((receitas) => {
+                res.render("categorias/receitas", {receitas: receitas, categoria: categoria})
+            }).catch((err) => {
+                req.flash("error_msg", "Houve um erro ao listar as receitas!")
+                res.redirect("/")
+            })
+        }else{
+            req.flash("error_msg", "Esta categoria não existe")
+            res.redirect("/")
+        }
+}).catch((err) =>{
+    req.flash("error_msg", "Houve um erro interno ao carregar a página desta categoria")
+    res.redirect("/")
+})
+})
+
 
 /* 8º Definir uma rota para cadastrar as postagens */
 /* 9º Loco em seguida criar o arquivo html handlebars que será renderizado */
 app.get('/cadposts', (req, res) => {
     res.render('cadposts')
 })
-/* 10º Definir uma rota para receber as postagens e linkar essa rota ao formulário html no handlebars */
 
+/* 10º Definir uma rota para receber as postagens e linkar essa rota ao formulário html no handlebars */
 app.post('/receitarecebida', (req, res) => {
     req.body.nomeDaReceita
     res.send('Nova receita recebida!')

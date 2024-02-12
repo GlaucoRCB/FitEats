@@ -1,0 +1,15 @@
+<h1 class="fonte">{{categoria.nome}}</h1>
+{{#each receitas}}
+<div class="card box">
+    <div class="card-body">
+        <h3 class="fonte">{{titulo}}</h3>
+        <p class="fonte">{{modopreparo}}</p>
+        <a href="/receita/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
+        <hr>
+        <small class="fonte">Data de publicação: {{data}}</small>
+        <hr>
+    </div>
+</div>
+{{else}}
+    <h5 class="fonte">Nenhuma receita</h5>
+{{/each}}

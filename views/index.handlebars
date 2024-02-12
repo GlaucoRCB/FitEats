@@ -1,0 +1,26 @@
+<div class="jumbotron">
+  <h1 class="display-4 fonte">Bem vindo ao FitEats!</h1>
+  <p class="lead fonte">Este é um projeto simples, desenvolvido com Node js + Express + MongoDB.</p>
+  <p class="fonte">Aqui você vai poder pesquisar varios tipos de receitas do mundo fitness para sua dieta!</p>
+  <a class="btn btn-primary btn-lg" href="/usuarios/registro" role="button">Crie uma conta</a>
+</div>
+
+<hr>
+
+<h2 class="fonte">Receitas recentes: </h2>
+<br>
+{{#each receitas}}
+<div class="card box">
+    <div class="card-body">
+        <h3 class="fonte">{{titulo}}</h3>
+        <p class="fonte">{{modopreparo}}</p>
+        <a href="/receita/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
+        <hr>
+        <small class="fonte">Categoria: {{categoria.nome}}</small><br>
+        <small class="fonte">Data de publicação: {{data}}</small>
+        <hr>
+    </div>
+</div>
+{{else}}
+    <h5 class="fonte">Nenhuma receita</h5>
+{{/each}}
