@@ -10,17 +10,17 @@
 <h2 class="fonte">Receitas recentes: </h2>
 <br>
 {{#each receitas}}
-<div class="card box">
+<br>
+<div class="card">
     <div class="card-body">
-        <h3 class="fonte">{{titulo}}</h3>
-        <p class="fonte">{{modopreparo}}</p>
+        <h3 class="">{{titulo}}</h3>
+        <p class="">{{modopreparo}}</p>
         <a href="/receita/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
         <hr>
-        <small class="fonte">Categoria: {{categoria.nome}}</small><br>
-        <small class="fonte">Data de publicação: {{data}}</small>
-        <hr>
+        <small class="">Categoria: {{categoria.nome}}</small><br>
+        <small class="">Data de publicação: {{data}}</small><br>
     </div>
 </div>
 {{else}}
-    <h5 class="fonte">Nenhuma receita</h5>
+    <h5 class="">Nenhuma receita</h5>
 {{/each}}

@@ -4,20 +4,20 @@
 
 {{/each}}
 <h1 class="font">Editar receita</h1>
-<div class="card-body box">
-    <div class="box">
+<div class="card">
+    <div class="card-body">
         <form action="/admin/receitas/edit"  method="post">
             <input type="hidden" value="{{receita._id}}" name="id">
-            <label for="titulo" class="fonte">Título: </label>
+            <label for="titulo" class="">Título: </label>
             <input type="text" name="titulo" class="form-control" value="{{receita.titulo}}" required>
-            <label for="slug" class="fonte">Slug: </label>
+            <label for="slug" class="">Slug: </label>
             <input type="text" name="slug" class="form-control" value="{{receita.slug}}" required>
-            <label for="ingredientes" class="fonte">Ingredientes: </label>
+            <label for="ingredientes" class="">Ingredientes: </label>
             <input type="text" name="ingredientes" class="form-control" value="{{receita.ingredientes}}" required>
-            <label for="modopreparo" class="fonte">Modo de preparo</label>
+            <label for="modopreparo" class="">Modo de preparo</label>
             <textarea name="modopreparo" class="form-control" required>{{receita.modopreparo}}</textarea>
             <br>
-            <label for="categoria" class="fonte">Categoria: </label>
+            <label for="categoria" class="">Categoria: </label>
             <select name="categoria" class="form-select">
                 {{#each categorias}}
                     <option value="{{_id}}">{{nome}}</option>

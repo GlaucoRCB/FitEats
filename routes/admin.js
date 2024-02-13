@@ -10,21 +10,31 @@ const Categoria = mongoose.model("categorias")
 /* carregar o model das receitas */
 require("../models/Receita")
 const Receita = mongoose.model("receitas")
+/* Carregando os helpers */
+const {eAdmin} = require("../helpers/eAdmin")
 
-router.get('/', (req, res) => {
+router.get('/', eAdmin, (req, res) => {
     res.render("admin/index")
 })
 /* listando as receitas cadastradas */
-router.get("/receitas", (req, res) => {
+router.get("/receitas", eAdmin, (req, res) => {
     Receita.find().sort({date:'desc'}).then((receitas) => {
-        res.render("admin/receitas", {receitas: receitas})
+        Categoria.find().then((categorias) => {
+            receitas.map((element) => {
+                element.categoria = categorias.find(x=>x.id==element.categoria)
+            })
+        res.render("admin/receitas", {receitas: receitas, categorias: categorias})
     }).catch((err) => {
         req.flash("error_msg", "Houve um erro ao listar as receitas")
         res.redirect("/admin")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao listar as receitas")
+        res.redirect("/admin")
+        })
     })
 })
 
-router.get("/categorias", (req, res) => {
+router.get("/categorias", eAdmin, (req, res) => {
     /*listando categorias para serem exibidas no site função date :'desc usada para listar por ordem de criação */
     Categoria.find().sort({date:'desc'}).then((categorias) => {
         res.render("admin/categorias", {categorias: categorias})
@@ -34,12 +44,12 @@ router.get("/categorias", (req, res) => {
     })
 })
 
-router.get('/categorias/add', (req, res) => {
+router.get('/categorias/add', eAdmin, (req, res) => {
     res.render("admin/addcategorias")
 })
 
 /*Receberá os dados do formulario e enviara para o mongo (banco de dados) */
-router.post("/categorias/nova", (req, res) => {
+router.post("/categorias/nova", eAdmin, (req, res) => {
     /*fazendo a validação de dados, que irão ser inseridos ou não no app */
     var erros = []
     
@@ -70,7 +80,7 @@ router.post("/categorias/nova", (req, res) => {
     }
 })
 /*rota de edição de categorias */
-router.get("/categorias/edit/:id", (req, res) => {
+router.get("/categorias/edit/:id", eAdmin, (req, res) => {
     /* findOne para buscar 1 só pelo id */
     Categoria.findOne({_id:req.params.id}).then((categoria) => {
         res.render("admin/editcategorias", {categoria: categoria})
@@ -80,7 +90,7 @@ router.get("/categorias/edit/:id", (req, res) => {
     })
 })
 /* rota que ira passar os valores da edição para categoria */
-router.post("/categorias/edit", (req, res) => {
+router.post("/categorias/edit", eAdmin, (req, res) => {
 
     Categoria.findOne({_id: req.body.id}).then((categoria) => {
 
@@ -101,7 +111,7 @@ router.post("/categorias/edit", (req, res) => {
     })
 })
 /* criando uma rota para deletar a categoria ele te leva pra essa rota deleta a categoria e volta pra rota normal mostrando ela atualizada */
-router.post("/categorias/deletar", (req, res) => {
+router.post("/categorias/deletar", eAdmin, (req, res) => {
     Categoria.deleteOne({_id: req.body.id}).then(() => {
         req.flash("success_msg", "Categoria deletada com sucesso!")
         res.redirect("/admin/categorias")
@@ -111,11 +121,11 @@ router.post("/categorias/deletar", (req, res) => {
     })
 })
 /* rota para listar as receitas */
-router.get("/receitas", (req, res) => {
+router.get("/receitas", eAdmin, (req, res) => {
     res.render("admin/receitas")
 })
 /* rota para adicionar novas receitas */
-router.get("/receitas/add", (req, res) => {
+router.get("/receitas/add", eAdmin, (req, res) => {
     Categoria.find().then((categorias) => {
         res.render("admin/addreceitas", {categorias: categorias})
     }).catch((err) => {
@@ -124,7 +134,7 @@ router.get("/receitas/add", (req, res) => {
     })
 })
 /* rota para enviar os dados para o banco de dados das novas receitas */
-router.post("/receitas/nova", (req, res) => {
+router.post("/receitas/nova", eAdmin, (req, res) => {
     /* validando os dados da postagem da receita */
     var erros = []
 
@@ -167,7 +177,7 @@ router.post("/receitas/nova", (req, res) => {
     }
 })
 /* rota para edição de receitas */
-router.get("/receitas/edit/:id", (req, res) => {
+router.get("/receitas/edit/:id", eAdmin, (req, res) => {
     /* findOne para buscar 1 só pelo id */
     Receita.findOne({_id:req.params.id}).then((receita) => {
         /* fazendo duas buscas seguidas para renderizar os dados */
@@ -184,7 +194,7 @@ router.get("/receitas/edit/:id", (req, res) => {
     })
 })
 /* rota para postar as edições */
-router.post("/receitas/edit", (req, res) => {
+router.post("/receitas/edit", eAdmin, (req, res) => {
     Receita.findOne({_id: req.body.id}).then((receita) => {
 
         receita.titulo = req.body.titulo
@@ -208,7 +218,7 @@ router.post("/receitas/edit", (req, res) => {
     })
 })
 /* rota para deletar as receitas */
-router.get("/receitas/deletar/:id", (req, res) => {
+router.get("/receitas/deletar/:id", eAdmin, (req, res) => {
     Receita.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Receita deletada com sucesso!")
         res.redirect("/admin/receitas")

@@ -29,6 +29,11 @@ require("./models/Receita")
 const Receita = mongoose.model("receitas")
 require("./models/Categoria")
 const Categoria = mongoose.model("categorias")
+/* carregando o model de usuarios na aplicação principal */
+const usuarios = require("./routes/usuario")
+/* carregando a authenticação */
+const passport = require("passport")
+require("./config/auth")(passport)
 // Configurações
 /*configurando a session e o flash */
     app.use(session({
@@ -36,11 +41,18 @@ const Categoria = mongoose.model("categorias")
         resave: true,
         saveUninitialized: true
     }))
+    /* configurando o passport */
+    app.use(passport.initialize())
+    app.use(passport.session())
+
+
     app.use(flash())
     /*Colocando um middleware ele precisa ter req, res, next*/
     app.use((req, res, next) => {
         res.locals.success_msg = req.flash("success_msg")
         res.locals.error_msg = req.flash("error_msg")
+        res.locals.error = req.flash("error")
+        res.locals.user = req.user || null;
         next()
     })
     
@@ -149,6 +161,7 @@ app.post('/receitarecebida', (req, res) => {
 
 /*colocando para o arquivo principal as rota admin*/
 app.use('/admin', admin)
+app.use("/usuarios", usuarios)
 
 
 

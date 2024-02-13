@@ -3,12 +3,12 @@
 <a href="/admin/receitas/add"><button class="btn btn-success">Nova receita</button></a><br>
 {{#each receitas}}
 <br>
-    <div class="card-body box">
-        <div class="box">
-            <h4 class="fonte">Título: {{titulo}}</h4>
-            <p class="fonte">Modo de preparo: {{modopreparo}}</p>
-            <small class="fonte">Data: {{data}}</small>
-            <small class="fonte">Categoria: {{categoria.nome}}</small><br>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="">Título: {{titulo}}</h4>
+            <p class="">Modo de preparo: {{modopreparo}}</p>
+            <small class="">Categoria: {{categoria.nome}}</small><br>
+            <small class="">Data: {{data}}</small><br>
             <a href="/admin/receitas/edit/{{_id}}"><button class="btn btn-success mt-3">Editar receita</button></a>
             <a href="/admin/receitas/deletar/{{_id}}"><button class="btn btn-danger mt-3">Deletar receita</button></a>
         </div>
