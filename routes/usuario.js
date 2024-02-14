@@ -7,7 +7,7 @@ const Usuario = mongoose.model("usuarios")
 /* importando o bcrypt para criptografar a senha */
 const bcrypt = require("bcryptjs")
 const passport = require("passport")
-
+/* carregando helpers */
 /* rota de registro do usuario */
 router.get("/registro", (req, res) => {
     res.render("usuarios/registro")
@@ -85,7 +85,6 @@ router.get("/login", (req, res) => {
 })
 
 router.post("/login", (req, res, next) => {
-    
     passport.authenticate("local", {
         successRedirect: "/",
         failureRedirect: "/usuarios/login",

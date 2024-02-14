@@ -13,24 +13,27 @@
         <li class="nav-item">
           <a class="nav-link active" href="/categorias">Categorias</a>
         </li>
+        <!-- mostrar apenas se o usuário estiver logado -->
         {{#if user}}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/usuarios/logout">Logout</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/admin/receitas">Nova receita</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/admin/categorias">Nova categoria</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/usuarios/logout">Logout</a>
-        </li>
         {{else}}
-         <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/usuarios/login">Login</a>
         </li>
          <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/usuarios/registro">Registro</a>
         </li>
         {{/if}}
+        <!--  mostrar apenas painel do admin -->
+        
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">

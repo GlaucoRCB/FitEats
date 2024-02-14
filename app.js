@@ -32,7 +32,8 @@ const Categoria = mongoose.model("categorias")
 /* carregando o model de usuarios na aplicação principal */
 const usuarios = require("./routes/usuario")
 /* carregando a authenticação */
-const passport = require("passport")
+const passport = require("passport");
+const {eAdmin} = require("./helpers/eAdmin")
 require("./config/auth")(passport)
 // Configurações
 /*configurando a session e o flash */
@@ -55,6 +56,8 @@ require("./config/auth")(passport)
         res.locals.user = req.user || null;
         next()
     })
+
+    /* configurando multer */
     
 /* 7º Config
     Template Engine

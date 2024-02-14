@@ -13,6 +13,8 @@ const Receita = mongoose.model("receitas")
 /* Carregando os helpers */
 const {eAdmin} = require("../helpers/eAdmin")
 
+
+
 router.get('/', eAdmin, (req, res) => {
     res.render("admin/index")
 })
@@ -134,7 +136,8 @@ router.get("/receitas/add", eAdmin, (req, res) => {
     })
 })
 /* rota para enviar os dados para o banco de dados das novas receitas */
-router.post("/receitas/nova", eAdmin, (req, res) => {
+router.post("/receitas/nova", upload.single('receita_imagem'), eAdmin, (req, res) => {
+    console.log(req.file)
     /* validando os dados da postagem da receita */
     var erros = []
 
@@ -164,7 +167,7 @@ router.post("/receitas/nova", eAdmin, (req, res) => {
             slug: req.body.slug,
             modopreparo: req.body.modopreparo,
             ingredientes: req.body.ingredientes,
-            categoria: req.body.categoria
+            categoria: req.body.categoria,
         }
 
         new Receita(novaReceita).save().then(() => {
