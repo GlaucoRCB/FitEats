@@ -136,8 +136,7 @@ router.get("/receitas/add", eAdmin, (req, res) => {
     })
 })
 /* rota para enviar os dados para o banco de dados das novas receitas */
-router.post("/receitas/nova", upload.single('receita_imagem'), eAdmin, (req, res) => {
-    console.log(req.file)
+router.post("/receitas/nova", eAdmin, (req, res) => {
     /* validando os dados da postagem da receita */
     var erros = []
 
